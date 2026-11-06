@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>杭州湾公司健身房 - 运动入会须知</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f6fa;color:#333;line-height:1.6;max-width:480px;margin:0 auto;min-height:100vh}
+
+/* 顶部 */
+.top-bar{background:linear-gradient(135deg,#1a3a5c 0%,#2a5a8c 100%);color:#fff;padding:32px 24px 28px;text-align:center}
+.top-bar .logo-text{font-size:12px;opacity:.7;letter-spacing:3px}
+.top-bar h1{font-size:22px;font-weight:700;margin:10px 0 4px}
+.top-bar .sub{font-size:13px;opacity:.8}
+
+/* 卡片 */
+.card{background:#fff;margin:14px 12px;border-radius:14px;padding:22px 20px;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card-title{font-size:16px;font-weight:700;color:#1a3a5c;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid #f0f2f5;display:flex;align-items:center;gap:8px}
+.card-title .ico{font-size:18px}
+
+/* 表单 */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;color:#555;margin-bottom:6px;font-weight:500}
+.field label .req{color:#e74c3c;margin-right:2px}
+.field label .opt{color:#bbb;font-size:12px;font-weight:400}
+.field input{width:100%;padding:13px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;outline:none;transition:border-color .2s;-webkit-appearance:none;background:#fafafa}
+.field input:focus{border-color:#2a5a8c;background:#fff}
+.field input.err{border-color:#e74c3c}
+
+/* 须知链接 */
+.notice-link-wrap{margin:18px 0 14px}
+.notice-link{display:inline-flex;align-items:center;gap:6px;color:#2a5a8c;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;border-bottom:1.5px solid #2a5a8c;padding-bottom:2px}
+.notice-link:active{opacity:.7}
+.notice-link .arrow{font-size:12px;transition:transform .2s}
+.notice-link .dot{width:8px;height:8px;background:#e74c3c;border-radius:50%;display:none}
+.notice-link .dot.done{display:inline-block;background:#27ae60}
+
+/* 勾选 */
+.agree-row{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;background:#f8f9fa;border-radius:10px;margin-top:14px}
+.agree-row input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:#2a5a8c}
+.agree-row label{font-size:13px;color:#555;line-height:1.6;cursor:pointer}
+.agree-row.locked{opacity:.45;pointer-events:none}
+
+/* 签名 */
+.sig-wrap{border:2px dashed #ddd;border-radius:12px;overflow:hidden;background:#fafafa}
+.sig-canvas{width:100%;height:180px;display:block;cursor:crosshair;touch-action:none}
+.sig-tip{text-align:center;padding:8px;font-size:12px;color:#bbb}
+.sig-clear{text-align:right;padding:6px 12px;border-top:1px solid #eee}
+.sig-clear button{background:none;border:1px solid #ddd;padding:5px 16px;border-radius:6px;font-size:12px;color:#888;cursor:pointer}
+
+/* 提交按钮 */
+.submit-btn{display:block;width:calc(100% - 24px);margin:10px 12px 28px;padding:16px;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#1a3a5c,#2a5a8c);color:#fff;transition:opacity .2s}
+.submit-btn:active{opacity:.85}
+.submit-btn:disabled{background:#ccc;cursor:not-allowed}
+
+/* 成功页 */
+.success-view{display:none;text-align:center;padding:80px 24px}
+.success-view .ck{width:72px;height:72px;background:#27ae60;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#fff}
+.success-view h2{font-size:22px;color:#1a3a5c;margin-bottom:8px}
+.success-view p{font-size:14px;color:#999}
+
+/* ========== 弹窗 ========== */
+.modal-mask{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;align-items:flex-end;justify-content:center}
+.modal-mask.show{display:flex}
+.modal-box{background:#fff;width:100%;max-width:480px;max-height:85vh;border-radius:18px 18px 0 0;overflow:hidden;display:flex;flex-direction:column;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid #f0f0f0;flex-shrink:0}
+.modal-header h3{font-size:17px;color:#1a3a5c}
+.modal-close{width:32px;height:32px;border-radius:50%;border:none;background:#f0f0f0;font-size:18px;color:#666;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close:active{background:#e0e0e0}
+
+.modal-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px}
+.modal-body h2{font-size:18px;text-align:center;color:#1a3a5c;margin-bottom:12px}
+.modal-body h3{font-size:15px;color:#1a3a5c;margin:18px 0 8px;padding-left:8px;border-left:3px solid #e8654a}
+.modal-body p{font-size:14px;color:#555;margin:6px 0;line-height:1.8;text-indent:2em}
+.modal-body .greet{text-indent:0;margin:10px 0}
+.modal-body .company{text-align:right;color:#999;font-size:13px;margin-top:16px;text-indent:0}
+.modal-body .note-box{background:#fff8f0;border:1px solid #fde8d0;border-radius:8px;padding:12px 14px;margin:14px 0;font-size:13px;color:#c07030;text-indent:0}
+.modal-body .disease-box{background:#f8f9fa;border-radius:8px;padding:14px;margin:12px 0}
+.modal-body .disease-box h4{font-size:13px;color:#1a3a5c;margin:12px 0 6px}
+.modal-body .disease-box h4:first-child{margin-top:0}
+.modal-body .disease-box p{font-size:12px;text-indent:0;margin:3px 0;padding-left:4px;line-height:1.6}
+
+.modal-footer{padding:14px 20px;border-top:1px solid #f0f0f0;flex-shrink:0;display:flex;gap:12px}
+.modal-footer .btn-read{flex:1;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#1a3a5c,#2a5a8c);color:#fff}
+.modal-footer .btn-read:active{opacity:.85}
+
+/* 阅读进度条(弹窗内) */
+.read-bar-wrap{padding:0 20px 12px;flex-shrink:0}
+.read-bar-wrap .lbl{display:flex;justify-content:space-between;font-size:12px;color:#999;margin-bottom:4px}
+.read-bar{height:5px;background:#e8e8e8;border-radius:3px;overflow:hidden}
+.read-bar-fill{height:100%;background:linear-gradient(90deg,#e8654a,#f09060);border-radius:3px;width:0%;transition:width .3s}
+
+/* 管理入口 */
+.admin-entry{text-align:center;padding:16px;font-size:12px}
+.admin-entry a{color:#ccc;text-decoration:none}
+
+/* 管理页 */
+.admin-view{display:none}
+.admin-top{background:#1a3a5c;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
+.admin-top h2{font-size:18px}
+.admin-top button{background:rgba(255,255,255,.2);border:none;color:#fff;padding:6px 16px;border-radius:6px;font-size:14px;cursor:pointer}
+.admin-body{padding:16px}
+.admin-count{text-align:center;padding:12px;font-size:14px;color:#888}
+.admin-item{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.admin-item .nm{font-size:16px;font-weight:600;color:#1a3a5c}
+.admin-item .tm{font-size:12px;color:#aaa;margin-top:2px}
+.admin-item .dt{font-size:13px;color:#666;margin-top:6px;line-height:1.8}
+.admin-item img{max-width:140px;margin-top:8px;border:1px solid #eee;border-radius:6px}
+.admin-export{display:block;margin:16px;padding:13px;background:#27ae60;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;text-align:center}
+.admin-clear{display:block;margin:0 16px 20px;padding:10px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;text-align:center}
+
+/* Toast */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.78);color:#fff;padding:10px 24px;border-radius:8px;font-size:14px;z-index:2000;display:none;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ==================== 主页面 ==================== -->
+<div id="mainPage">
+  <div class="top-bar">
+    <div class="logo-text">GEELY 吉利控股集团</div>
+    <h1>健身运动入会须知</h1>
+    <div class="sub">杭州湾公司员工健身房</div>
+  </div>
+
+  <!-- 1. 填写信息 -->
+  <div class="card">
+    <div class="card-title"><span class="ico">📋</span> 填写个人信息</div>
+    <div class="field">
+      <label><span class="req">*</span> 姓名</label>
+      <input type="text" id="fName" placeholder="请输入姓名" maxlength="20">
+    </div>
+    <div class="field">
+      <label><span class="req">*</span> 手机号</label>
+      <input type="tel" id="fPhone" placeholder="请输入手机号" maxlength="11">
+    </div>
+    <div class="field">
+      <label>身份证号 <span class="opt">(非必填)</span></label>
+      <input type="text" id="fIdCard" placeholder="请输入身份证号(选填)" maxlength="18">
+    </div>
+    <div class="field">
+      <label><span class="req">*</span> 紧急联系人姓名</label>
+      <input type="text" id="fEmName" placeholder="请输入紧急联系人姓名" maxlength="20">
+    </div>
+    <div class="field">
+      <label><span class="req">*</span> 紧急联系人手机号</label>
+      <input type="tel" id="fEmPhone" placeholder="请输入紧急联系人手机号" maxlength="11">
+    </div>
+  </div>
+
+  <!-- 2. 阅读须知 + 勾选 -->
+  <div class="card">
+    <div class="card-title"><span class="ico">📖</span> 入会须知确认</div>
+
+    <div class="notice-link-wrap" style="display:none"></div>
+
+    <div class="agree-row locked" id="agreeRow">
+      <input type="checkbox" id="agreeCb">
+      <label for="agreeCb">我已阅读并同意<a style="color:#2a5a8c;font-weight:600;cursor:pointer;text-decoration:underline;margin:0 4px" onclick="openModal()">《健身运动入会须知》</a></label>
+    </div>
+  </div>
+
+  <!-- 3. 电子签名 -->
+  <div class="card">
+    <div class="card-title"><span class="ico">✍️</span> 电子签名</div>
+    <div class="sig-wrap">
+      <canvas class="sig-canvas" id="sigCanvas"></canvas>
+      <div class="sig-tip">请在上方区域手写签名</div>
+      <div class="sig-clear"><button onclick="clearSig()">清除重签</button></div>
+    </div>
+  </div>
+
+  <!-- 提交 -->
+  <button class="submit-btn" id="submitBtn" onclick="doSubmit()">提交确认</button>
+
+  <div class="admin-entry"><a href="javascript:void(0)" onclick="showAdmin()">管理入口</a></div>
+</div>
+
+<!-- ==================== 成功页 ==================== -->
+<div class="success-view" id="successView">
+  <div class="ck">✓</div>
+  <h2>提交成功!</h2>
+  <p>您的入会信息已成功提交</p>
+  <p style="margin-top:8px;font-size:13px;color:#bbb">请前往健身房前台办理后续手续</p>
+</div>
+
+<!-- ==================== 须知弹窗 ==================== -->
+<div class="modal-mask" id="modalMask">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>📖 健身运动入会须知</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- 阅读进度 -->
+    <div class="read-bar-wrap">
+      <div class="lbl"><span>阅读进度</span><span id="modalPct">0%</span></div>
+      <div class="read-bar"><div class="read-bar-fill" id="modalFill"></div></div>
+    </div>
+
+    <div class="modal-body" id="modalBody">
+      <h2>健身运动入会须知</h2>
+      <p class="greet">尊敬的会员:</p>
+      <p>欢迎您使用杭州湾公司员工健身房。健身运动存在一定的运动风险,为保障您的人身安全,维护自身及他人的合法权益,请在办理会员手续及入场锻炼前,仔细阅读本告知书全部内容。签署本告知书即表示您已充分理解、知悉并自愿接受以下全部内容。</p>
+
+      <h3>一、健康申报与风险提示</h3>
+      <p>1、健身运动属于具有一定强度的体育运动,可能存在运动损伤、突发疾病等风险。患有心脏病、高血压、脑血管疾病、哮喘、癫痫、糖尿病、关节疾病、传染性疾病及其他不适宜剧烈运动疾病的人员,请勿入场锻炼或遵医嘱谨慎锻炼。</p>
+      <p>2、饮酒后、熬夜或过度疲劳、身体不适、服用影响运动能力药物期间,以及孕期、术后恢复期人员,请勿入场锻炼。公司有权对明显不适宜运动的人员拒绝入场。</p>
+      <p>3、会员应如实评估并申报自身健康状况。凡隐瞒病史、身体状况不适宜运动而坚持入场锻炼的,由此产生的一切后果由本人承担。不宜参加健身锻炼的具体疾病种类详见本告知书附件《不宜参加健身运动的38种大病清单》。</p>
+
+      <h3>二、运动安全注意事项</h3>
+      <p>1、锻炼前应进行充分热身,锻炼后做好放松拉伸,循序渐进、量力而行,根据自身状况合理选择运动项目及强度,避免超负荷运动。</p>
+      <p>2、使用器材前请先了解正确的使用方法,首次使用或进行大重量训练时,建议在管理人员或专业指导下进行,并安排同伴保护,严禁独自进行大重量卧推、深蹲等高风险动作。</p>
+      <p>3、进入健身房须穿着运动服装及运动鞋,禁止赤膊、赤脚及穿皮鞋、高跟鞋、拖鞋锻炼;长发应束起,使用器械时请勿佩戴项链、围巾、长耳机线等易被器械勾缠的物品。</p>
+      <p>4、运动中如出现胸闷、胸痛、心悸、头晕、恶心、呼吸困难、关节剧痛等不适症状,应立即停止运动,原地休息,并及时向健身房管理人员求助或就医。</p>
+      <p>5、请遵守《杭州湾公司健身房管理制度》及现场管理规定,服从管理人员的巡查和管理,不得私自调整空调、灯光等公共设备,不得擅自移动、拆卸或维修健身器材。</p>
+
+      <h3>三、责任确认</h3>
+      <p>1、本人确认:健身锻炼属个人自愿行为,本人已如实申报自身健康状况,身体条件适合参加健身运动,且不属于附件清单所列不宜参加健身运动的情形。</p>
+      <p>2、因本人自身健康原因、隐瞒病史、不当使用器材或超出自身运动能力造成的意外伤害及突发疾病,公司将尽力提供必要协助(包括但不限于拨打急救电话、通知紧急联系人等),但不承担医疗及赔偿费用。</p>
+      <p>3、因本人违反《杭州湾公司健身房管理制度》或本告知书约定,造成自身、他人人身伤害或财产损失的,由本人承担相应责任。</p>
+
+      <h3>四、应急信息</h3>
+      <p>1、健身房配备管理人员,负责日常巡查、器材检查和应急处理。如遇紧急情况,请立即向现场管理人员求助。</p>
+      <p>2、急救电话:120;健身房管理人员电话:见健身房前台公示。</p>
+
+      <h3>五、会员入场与退会管理</h3>
+      <p>1、仅限会员入场使用,暂不接待非会员入场。有需求者可至健身房前台办理登记,采集人脸信息后开通门禁权限。</p>
+      <p>2、离职及工作调离杭州湾员工应在办理离职或调动手续时同步办理退会手续,剩余费用按照月换算退还。如未办理退会手续,到期后自动终止,费用不退。</p>
+
+      <div class="note-box">备注:本告知书一式两份,公司与会员本人各执一份;首次办理会员时签署本告知书后,方可开通门禁权限。附件《不宜参加健身运动的38种大病清单》为本告知书组成部分,与告知书正文具有同等效力。</div>
+
+      <h3>附件:不宜参加健身运动的38种大病清单</h3>
+      <p>本清单参考重大疾病保险行业定义及运动医学禁忌整理。凡患有以下任一疾病,或曾患相关疾病、处于治疗期及恢复期的员工,请勿进入健身房锻炼,或事先咨询医生并经医生书面许可后,在专人陪同下谨慎锻炼;未列入本清单但患有其他慢性疾病或身体不适者,同样应谨慎评估后再行锻炼。</p>
+
+      <div class="disease-box">
+        <h4>一、心血管疾病(10种)</h4>
+        <p>1. 冠心病(心绞痛、心肌梗死及支架/搭桥术后)</p>
+        <p>2. 高血压(中重度或未规律服药控制者)</p>
+        <p>3. 心力衰竭(各种心脏病导致的心功能不全)</p>
+        <p>4. 严重心律失常(房颤、室性心动过速、病态窦房结综合征等)</p>
+        <p>5. 心肌病(肥厚型、扩张型、限制型)</p>
+        <p>6. 心脏瓣膜病(中重度狭窄或关闭不全)</p>
+        <p>7. 先天性心脏病(未矫治或矫治后仍有明显心功能障碍)</p>
+        <p>8. 主动脉瘤、主动脉夹层</p>
+        <p>9. 肺源性心脏病(肺心病)</p>
+        <p>10. 严重周围血管疾病(下肢动脉硬化闭塞、深静脉血栓急性期)</p>
+        <h4>二、脑血管疾病(5种)</h4>
+        <p>11. 脑出血(现患期及后遗症期)</p>
+        <p>12. 脑梗死(现患期及后遗症期)</p>
+        <p>13. 脑动脉瘤、脑血管畸形</p>
+        <p>14. 短暂性脑缺血发作(TIA)</p>
+        <p>15. 重度颅脑损伤及后遗症</p>
+        <h4>三、呼吸系统疾病(4种)</h4>
+        <p>16. 慢性阻塞性肺疾病(COPD)、肺气肿、肺大泡</p>
+        <p>17. 支气管哮喘(中重度发作期及运动诱发型)</p>
+        <p>18. 肺纤维化、间质性肺病</p>
+        <p>19. 肺栓塞及慢性呼吸衰竭</p>
+        <h4>四、神经及精神系统疾病(4种)</h4>
+        <p>20. 癫痫</p>
+        <p>21. 重症肌无力、多发性硬化</p>
+        <p>22. 帕金森病</p>
+        <p>23. 重度阿尔茨海默病及精神分裂症等重性精神疾病(无专人陪同者)</p>
+        <h4>五、内分泌、代谢及骨骼疾病(4种)</h4>
+        <p>24. 糖尿病(血糖控制不稳、易发低血糖或已有心脑血管、视网膜、肾脏并发症者)</p>
+        <p>25. 甲状腺功能亢进(未控制期)</p>
+        <p>26. 重度骨质疏松(有病理性骨折风险者)</p>
+        <p>27. 痛风急性发作期</p>
+        <h4>六、消化系统疾病(4种)</h4>
+        <p>28. 肝硬化(失代偿期,含食管胃底静脉曲张)</p>
+        <p>29. 重型肝炎(急性、亚急性重型及慢性肝炎活动期)</p>
+        <p>30. 消化性溃疡伴近期出血史</p>
+        <p>31. 急性胰腺炎及慢性复发性胰腺炎</p>
+        <h4>七、泌尿系统疾病(2种)</h4>
+        <p>32. 慢性肾功能不全、终末期肾病(尿毒症)</p>
+        <p>33. 急性肾炎及肾病综合征活动期</p>
+        <h4>八、肿瘤及血液系统疾病(3种)</h4>
+        <p>34. 各类恶性肿瘤(治疗期及康复期,剧烈运动须遵医嘱)</p>
+        <p>35. 重度贫血、再生障碍性贫血</p>
+        <p>36. 血友病及其他凝血功能障碍性疾病</p>
+        <h4>九、其他情形(2种)</h4>
+        <p>37. 重大器官移植、造血干细胞移植术后</p>
+        <p>38. 大型手术后恢复期、骨折未愈合期、急性感染发热期</p>
+      </div>
+
+      <p>如对本清单内容或自身健康状况是否适宜锻炼存有疑问,请咨询健身房管理人员或专业医生。</p>
+      <p class="company">杭州湾公司<br>2026年9月</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-read" id="modalReadBtn" onclick="confirmRead()">我已阅读完毕 ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 管理页 ==================== -->
+<div class="admin-view" id="adminView">
+  <div class="admin-top">
+    <h2>📊 提交数据</h2>
+    <button onclick="hideAdmin()">返回</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-count" id="adminCount">共 0 条记录</div>
+    <button class="admin-export" onclick="exportCSV()">📥 导出Excel(CSV)</button>
+    <div id="adminList"></div>
+    <button class="admin-clear" onclick="clearData()">🗑️ 清空所有数据</button>
+  </div>
+</div>
+
+<script>
+// ========== 弹窗控制 ==========
+const modalMask = document.getElementById('modalMask');
+const modalBody = document.getElementById('modalBody');
+const modalPct = document.getElementById('modalPct');
+const modalFill = document.getElementById('modalFill');
+const agreeRow = document.getElementById('agreeRow');
+const agreeCb = document.getElementById('agreeCb');
+let modalReadDone = false;
+
+function openModal() {
+  modalMask.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  // 重置阅读进度
+  modalBody.scrollTop = 0;
+  modalPct.textContent = '0%';
+  modalFill.style.width = '0%';
+  modalReadDone = false;
+}
+
+function closeModal() {
+  modalMask.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// 点击遮罩关闭
+modalMask.addEventListener('click', function(e) {
+  if (e.target === modalMask) closeModal();
+});
+
+// 阅读进度检测
+modalBody.addEventListener('scroll', function() {
+  const st = this.scrollTop;
+  const sh = this.scrollHeight - this.clientHeight;
+  const pct = Math.min(Math.round((st / sh) * 100), 100);
+  modalPct.textContent = pct + '%';
+  modalFill.style.width = pct + '%';
+  if (pct >= 95) {
+    modalReadDone = true;
+  }
+});
+
+// 确认阅读
+function confirmRead() {
+  if (!modalReadDone) {
+    toast('请滑动阅读完全部内容后再确认');
+    return;
+  }
+  closeModal();
+  // 自动勾选
+  agreeRow.classList.remove('locked');
+  agreeCb.checked = true;
+  toast('已确认阅读,请完成签名后提交');
+}
+
+// ========== 电子签名 ==========
+let canvas, ctx, drawing = false, signed = false, lx = 0, ly = 0;
+
+function initSig() {
+  canvas = document.getElementById('sigCanvas');
+  const w = canvas.parentElement.clientWidth - 4;
+  canvas.width = w;
+  canvas.height = 180;
+  ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#1a3a5c';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  canvas.addEventListener('mousedown', sd);
+  canvas.addEventListener('mousemove', sm);
+  canvas.addEventListener('mouseup', se);
+  canvas.addEventListener('mouseout', se);
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    const t = e.touches[0], r = canvas.getBoundingClientRect();
+    sd({ offsetX: t.clientX - r.left, offsetY: t.clientY - r.top });
+  }, { passive: false });
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    const t = e.touches[0], r = canvas.getBoundingClientRect();
+    sm({ offsetX: t.clientX - r.left, offsetY: t.clientY - r.top });
+  }, { passive: false });
+  canvas.addEventListener('touchend', se);
+}
+
+function sd(e) { drawing = true; lx = e.offsetX; ly = e.offsetY; signed = true; }
+function sm(e) {
+  if (!drawing) return;
+  ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke();
+  lx = e.offsetX; ly = e.offsetY;
+}
+function se() { drawing = false; }
+function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); signed = false; }
+
+window.addEventListener('load', initSig);
+
+// ========== 提交 ==========
+function doSubmit() {
+  const name = document.getElementById('fName').value.trim();
+  const phone = document.getElementById('fPhone').value.trim();
+  const idCard = document.getElementById('fIdCard').value.trim();
+  const emName = document.getElementById('fEmName').value.trim();
+  const emPhone = document.getElementById('fEmPhone').value.trim();
+
+  if (!name) { toast('请输入姓名'); document.getElementById('fName').classList.add('err'); return; }
+  if (!phone || !/^1\d{10}$/.test(phone)) { toast('请输入正确的手机号'); document.getElementById('fPhone').classList.add('err'); return; }
+  if (!emName) { toast('请输入紧急联系人姓名'); document.getElementById('fEmName').classList.add('err'); return; }
+  if (!emPhone || !/^1\d{10}$/.test(emPhone)) { toast('请输入正确的紧急联系人手机号'); document.getElementById('fEmPhone').classList.add('err'); return; }
+  if (!agreeCb.checked) { toast('请先阅读并同意入会须知'); return; }
+  if (!signed) { toast('请先完成电子签名'); return; }
+
+  const record = {
+    name, phone, idCard, emName, emPhone,
+    signature: canvas.toDataURL('image/png')
+  };
+
+  // 调用后端API
+  fetch('/api/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(record)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('mainPage').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+    } else {
+      toast('提交失败:' + data.message);
+    }
+  })
+  .catch(err => {
+    toast('网络错误,请重试');
+  });
+}
+
+// ========== 管理 ==========
+function showAdmin() {
+  const pwd = prompt('请输入管理密码:');
+  if (!pwd) return;
+
+  fetch('/api/admin/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pwd })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('mainPage').style.display = 'none';
+      document.getElementById('adminView').style.display = 'block';
+      renderAdmin();
+    } else {
+      toast('密码错误');
+    }
+  })
+  .catch(err => toast('网络错误'));
+}
+function hideAdmin() {
+  document.getElementById('adminView').style.display = 'none';
+  document.getElementById('mainPage').style.display = 'block';
+}
+
+function renderAdmin() {
+  fetch('/api/admin/data')
+  .then(res => res.json())
+  .then(result => {
+    if (!result.success) return;
+    const records = result.data;
+    document.getElementById('adminCount').textContent = '共 ' + records.length + ' 条记录';
+    const list = document.getElementById('adminList');
+    list.innerHTML = '';
+    if (!records.length) { list.innerHTML = '<div style="text-align:center;padding:40px;color:#999">暂无数据</div>'; return; }
+    records.forEach(r => {
+      const d = document.createElement('div');
+      d.className = 'admin-item';
+      d.innerHTML = '<div class="nm">' + r.name + '</div>' +
+        '<div class="tm">' + r.time + '</div>' +
+        '<div class="dt">手机:' + r.phone + '<br>身份证:' + (r.idCard || '未填写') + '<br>紧急联系人:' + r.emergencyName + '(' + r.emergencyPhone + ')</div>' +
+        '<img src="' + r.signature + '" alt="签名">';
+      list.appendChild(d);
+    });
+  });
+}
+
+function exportCSV() {
+  window.location.href = '/api/admin/export';
+  toast('导出中...');
+}
+
+function clearData() {
+  if (confirm('确定清空所有数据？不可恢复！')) {
+    fetch('/api/admin/clear', { method: 'POST' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        renderAdmin();
+        toast('已清空');
+      }
+    });
+  }
+}
+
+// ========== Toast ==========
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 2500);
+}
+
+document.querySelectorAll('input').forEach(i => i.addEventListener('input', function() { this.classList.remove('err'); }));
+</script>
+</body>
+</html>
